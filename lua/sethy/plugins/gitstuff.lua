@@ -66,8 +66,8 @@ return {
 				map("n", "<leader>gp", gs.preview_hunk, "Preview hunk")
 				map("n", "<leader>gbl", function() gs.blame_line({ full = true }) end, "Blame line")
 				map("n", "<leader>gB", gs.toggle_current_line_blame, "Toggle line blame")
-				map("n", "<leader>gd", gs.diffthis, "Diff this")
-				map("n", "<leader>gD", function() gs.diffthis("~") end, "Diff this ~")
+				map("n", "<leader>gh", gs.diffthis, "Diff this (git)")  -- Changed from gd to gh
+				map("n", "<leader>gH", function() gs.diffthis("~") end, "Diff this ~ (git)")  -- Changed from gD to gH
 
 				-- Text object
 				map({ "o", "x" }, "ih", ":<C-U>Gitsigns select_hunk<CR>", "Gitsigns select hunk")

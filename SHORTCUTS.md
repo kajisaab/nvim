@@ -1,458 +1,428 @@
-# Essential Neovim Shortcuts Guide
+# 🎯 Complete Neovim Shortcuts Cheatsheet
 
-## 🎯 Multi-Cursor (VSCode-like)
-
-| Keybinding | Action | VSCode Equivalent |
-|------------|--------|-------------------|
-| `<C-d>` | Select next occurrence | `Ctrl+D` |
-| `<C-x>` | Skip current, find next | `Ctrl+K, Ctrl+D` |
-| `<leader>A` | Select ALL occurrences | `Ctrl+Shift+L` |
-| `<Alt-Up>` | Add cursor above | `Alt+Up` |
-| `<Alt-Down>` | Add cursor below | `Alt+Down` |
-| `<Tab>` | Switch between cursor/extend mode | (in multi-cursor mode) |
-| `<Esc>` | Exit multi-cursor mode | `Esc` |
-
-**Example:** Place cursor on `userName` → Press `<C-d>` repeatedly → Edit all at once!
-
-**Note:** After selecting with `<C-d>`, you can:
-- Press `c` to change (delete and insert)
-- Press `I` to insert at the beginning
-- Press `A` to insert at the end
-- Press any edit command
+**Leader key:** `Space`
 
 ---
 
-## 🗑️ Delete Operations
+## 🧭 Navigation & Go-to Commands
 
-### Basic Deletes
-| Command | Action |
-|---------|--------|
-| `dd` | Delete current line |
-| `5dd` | Delete 5 lines |
-| `dw` | Delete word |
-| `diw` | Delete inner word (whole word) |
-| `D` or `d$` | Delete to end of line |
-| `d0` | Delete to start of line |
+### LSP Navigation (Code Intelligence)
 
-### Smart Deletes (Text Objects)
-| Command | Action | Example |
-|---------|--------|---------|
-| `di"` | Delete inside quotes | `"hello"` → `` |
-| `di'` | Delete inside single quotes | `'hello'` → `''` |
-| `di(` | Delete inside parentheses | `(hello)` → `()` |
-| `di{` | Delete inside braces | `{hello}` → `{}` |
-| `di[` | Delete inside brackets | `[hello]` → `[]` |
-| `dit` | Delete inside HTML tag | `<div>hi</div>` → `<div></div>` |
+| Shortcut | Action | Description |
+|----------|--------|-------------|
+| **`gd`** | **Go to Definition** | Jump to where function/variable is defined ⭐ |
+| `gD` | Go to Declaration | Jump to declaration |
+| `gr` | Show References | Show all places using this symbol |
+| `gI` | Show Implementations | Show implementations of interface |
+| `gy` | Show Type Definition | Show type definition |
+| `K` | Hover Documentation | Show docs for symbol under cursor |
+| `Ctrl-o` | Jump Back | Return to previous location |
+| `Ctrl-i` | Jump Forward | Go forward in jump history |
 
-### Visual Mode Delete
-
-**Delete Full Lines:**
-1. `V` - Select line(s) with j/k (up/down)
-2. `d` - Delete selected lines
-
-**Delete Partial Text:**
-1. `v` - Enter visual character mode
-2. Move with h/j/k/l or w/b to select text
-3. `d` - Delete only selected portion
-
-**Delete Block/Column:**
-1. `<C-v>` - Enter visual block mode
-2. Select rectangular area
-3. `d` - Delete block
-
-**Quick Visual Deletes:**
-| Command | Action |
-|---------|--------|
-| `viwdd` | Select word and delete |
-| `vi"d` | Delete text inside quotes |
-| `vi(d` | Delete text inside parentheses |
-| `Vjjd` | Select and delete 3 lines |
+**Example:** Place cursor on `getConversationHistory` → Press `gd` → Jumps to function definition!
 
 ---
 
-## 📍 Navigation
+## 💾 Save & Buffer Management
 
-### Line Navigation
-| Command | Action |
-|---------|--------|
-| `0` | Start of line (column 0) |
-| `^` | First non-blank character |
-| `$` | End of line |
-| `I` | Insert at start of line |
-| `A` | Insert at end of line |
+### Save Files
 
-### File Navigation
-| Command | Action |
-|---------|--------|
-| `gg` | Go to start of file |
-| `G` | Go to end of file |
-| `50G` | Go to line 50 |
-| `<C-u>` | Scroll up half page (centered) |
-| `<C-b>` | Scroll up full page (centered) |
-| `<C-f>` | Scroll down full page |
+| Shortcut | Action |
+|----------|--------|
+| `Ctrl+S` | Quick save (works in insert & normal mode) ⭐ |
+| `Space w` | Save current file |
+| `Space W` | Save ALL files |
 
-### Word Navigation
-| Command | Action |
-|---------|--------|
-| `w` | Next word |
-| `b` | Previous word |
-| `e` | End of word |
-| `W` | Next WORD (space-separated) |
-| `B` | Previous WORD |
+### Navigate Buffers (Open Files)
 
----
+| Shortcut | Action |
+|----------|--------|
+| `Tab` | Next buffer ⭐ |
+| `Shift+Tab` | Previous buffer ⭐ |
+| `Shift+L` | Next buffer (alternative) |
+| `Shift+H` | Previous buffer (alternative) |
+| `Space bb` | List all buffers (searchable) |
+| `Space bp` | Pick buffer interactively |
 
-## 🔍 Find and Search
+### Close Buffers
 
-### Basic Search
-| Command | Action |
-|---------|--------|
-| `/pattern` | Search forward |
-| `?pattern` | Search backward |
-| `n` | Next match |
-| `N` | Previous match |
-| `*` | Find word under cursor (forward) |
-| `#` | Find word under cursor (backward) |
-| `<C-c>` | Clear search highlights |
-
-### Find and Replace
-| Command | Action | Example |
-|---------|--------|---------|
-| `<leader>s` | Replace word globally | Place cursor on word → type new word |
-| `<leader>sr` | Replace with confirmation | Interactive y/n/a/q |
-| `:%s/old/new/g` | Replace all in file | `:%s/foo/bar/g` |
-| `:%s/old/new/gc` | Replace with confirm | Press y/n for each |
-| `:'<,'>s/old/new/g` | Replace in selection | Visual select → command |
-
-**Confirmation options:**
-- `y` - Yes, replace
-- `n` - No, skip
-- `a` - Replace All remaining
-- `q` - Quit
+| Shortcut | Action |
+|----------|--------|
+| `Space x` | Close current buffer ⭐ |
+| `Space X` | Close all OTHER buffers |
+| `Space bP` | Pin/unpin buffer |
+| `Space bs` | Sort buffers by directory |
 
 ---
 
-## ✂️ Select Text (Visual Mode)
+## 🔍 Search & Find
 
-### Enter Visual Mode
-| Command | Action |
-|---------|--------|
-| `v` | Character-wise selection |
-| `V` | Line-wise selection |
-| `<C-v>` | Block/column selection |
-
-### Text Objects (with `v` or `d`)
-| Command | Action | Example |
-|---------|--------|---------|
-| `viw` | Select inner word | Selects word under cursor |
-| `vaw` | Select a word + spaces | Word with surrounding space |
-| `vi"` | Select inside quotes | Text between `"..."` |
-| `vi(` | Select inside parens | Text between `(...)` |
-| `vi{` | Select inside braces | Text between `{...}` |
-| `vit` | Select inside tag | HTML tag contents |
-| `ggVG` | Select entire file | From top to bottom |
-
----
-
-## 📋 Copy, Cut, Paste
-
-### Yank (Copy)
-| Command | Action |
-|---------|--------|
-| `yy` | Copy current line |
-| `5yy` | Copy 5 lines |
-| `yiw` | Copy inner word |
-| `y$` | Copy to end of line |
-| `<leader>Y` | Copy line to system clipboard |
-
-### Paste
-| Command | Action |
-|---------|--------|
-| `p` | Paste after cursor |
-| `P` | Paste before cursor |
-| `<leader>p` | Paste without overwriting register |
-
-### Special Delete (No Copy)
-| Command | Action |
-|---------|--------|
-| `<leader>d` | Delete without yanking |
-| `x` | Delete character (without yanking) |
-
----
-
-## 🧬 LSP Code Actions
-
-### Auto-Complete & Imports
-| Keybinding | Action |
-|------------|--------|
-| `<Tab>` | Accept completion / Next item |
-| `<C-j>` / `<C-k>` | Navigate completion menu |
-| `<C-e>` | Close completion menu |
-| `<leader>ca` | Add missing import |
-| `<leader>cA` | Add ALL missing imports |
-| `<leader>co` | Organize imports |
-| `<leader>cr` | Remove unused imports |
-
-### Code Generation
-| Keybinding | Action |
-|------------|--------|
-| `<leader>cm` | Implement interface methods |
-| `<leader>cf` | Quick fix / code actions |
-| `<leader>vca` | View all code actions |
-| `<leader>cg` | Generate getters/setters (Java) |
-| `<leader>cc` | Generate constructor (Java) |
-
-### Navigation
-| Keybinding | Action |
-|------------|--------|
-| `gd` | Go to definition |
-| `gD` | Go to declaration |
-| `gr` | Show references |
-| `gI` | Go to implementation |
-| `gy` | Go to type definition |
-| `K` | Show hover documentation |
-| `<leader>d` | Show line diagnostics |
-| `<leader>D` | Show buffer diagnostics |
-
-### Refactoring
-| Keybinding | Action |
-|------------|--------|
-| `<leader>rn` | Rename symbol |
-| `<leader>rs` | Restart LSP |
+| Shortcut | Action |
+|----------|--------|
+| `/` | Search forward (with wilder popup) |
+| `?` | Search backward |
+| `n` | Next search result |
+| `N` | Previous search result |
+| `Ctrl+C` | Clear search highlighting |
+| `Space ff` | Find files (Telescope) |
+| `Space fg` | Find text in files (grep) |
+| `Space fb` | Find in current buffer |
 
 ---
 
 ## 📝 Editing
 
-### Insert Mode
-| Command | Action |
-|---------|--------|
-| `i` | Insert before cursor |
-| `a` | Insert after cursor |
-| `I` | Insert at start of line |
-| `A` | Insert at end of line |
-| `o` | Open new line below |
-| `O` | Open new line above |
-| `jk` | Exit insert mode (custom) |
+### Basic Editing
 
-### Change Operations
-| Command | Action |
-|---------|--------|
-| `ciw` | Change inner word |
-| `ci"` | Change inside quotes |
-| `ci(` | Change inside parentheses |
-| `cc` | Change entire line |
-| `C` | Change to end of line |
+| Shortcut | Action |
+|----------|--------|
+| `jk` | Exit insert mode (instead of Esc) |
+| `V` then `J` | Move selected lines down |
+| `V` then `K` | Move selected lines up |
+| `<` (visual) | Indent left |
+| `>` (visual) | Indent right |
+| `Space f` | Format code (LSP) |
 
-### Undo/Redo
-| Command | Action |
-|---------|--------|
-| `u` | Undo |
-| `<C-r>` | Redo |
+### Copy/Paste/Delete
 
----
+| Shortcut | Action |
+|----------|--------|
+| `Space p` | Paste without losing clipboard (visual) |
+| `Space Y` | Copy to system clipboard |
+| `Space dd` | Delete without yanking ⭐ |
+| `x` | Delete char without yanking |
 
-## 🎨 Visual Mode Operations
+### Find & Replace
 
-### Move Lines
-| Command | Action | Mode |
-|---------|--------|------|
-| `J` | Move line down | Visual |
-| `K` | Move line up | Visual |
-
-### Indentation
-| Command | Action |
-|---------|--------|
-| `>` | Indent right (stays in visual) |
-| `<` | Indent left (stays in visual) |
-| `>>` | Indent line right (normal mode) |
-| `<<` | Indent line left (normal mode) |
+| Shortcut | Action |
+|----------|--------|
+| `Space s` | Replace word under cursor globally |
+| `Space sr` | Replace with confirmation |
+| `Space s` (visual) | Replace in selection |
 
 ---
 
-## 🪟 Window & Split Management
+## 🐛 Diagnostics & LSP
+
+### View Diagnostics
+
+| Shortcut | Action |
+|----------|--------|
+| `Space d` | Show diagnostic for current line ⭐ |
+| `Space D` | Show all diagnostics in file |
+| `Space lx` | Toggle diagnostics on/off |
+| `[d` | Go to previous diagnostic |
+| `]d` | Go to next diagnostic |
+
+### Code Actions
+
+| Shortcut | Action |
+|----------|--------|
+| `Space vca` | Show code actions |
+| `Space cf` | Quick fix |
+| `Space cm` | Implement interface methods |
+| `Space rn` | Rename symbol |
+| `Space ca` | Add missing imports (TS/JS) |
+| `Space co` | Organize imports |
+| `Space cr` | Remove unused imports |
+| `Space l` | Trigger linting manually |
+
+### LSP Management
+
+| Shortcut | Action |
+|----------|--------|
+| `Space rs` | Restart LSP |
+| `:LspInfo` | Show LSP info |
+| `:Mason` | Open Mason (LSP installer) |
+
+---
+
+## 🌿 Git Commands
+
+### Git Basics
+
+| Shortcut | Action |
+|----------|--------|
+| `Space gg` | Open Git (Fugitive) |
+| `Space lg` | Open LazyGit |
+
+### Git Hunks (Changes)
+
+| Shortcut | Action |
+|----------|--------|
+| `]h` | Next hunk |
+| `[h` | Previous hunk |
+| `Space gs` | Stage hunk |
+| `Space gr` | Reset hunk |
+| `Space gS` | Stage entire buffer |
+| `Space gR` | Reset entire buffer |
+| `Space gu` | Undo stage hunk |
+| `Space gp` | Preview hunk |
+
+### Git Diff & Blame
+
+| Shortcut | Action |
+|----------|--------|
+| `Space gh` | Git diff (changed from gd) ⭐ |
+| `Space gH` | Git diff ~ |
+| `Space gbl` | Blame line (full) |
+| `Space gB` | Toggle line blame |
+
+### Git Diffview
+
+| Shortcut | Action |
+|----------|--------|
+| `Space gdo` | Open Diffview |
+| `Space gdc` | Close Diffview |
+| `Space gdh` | File history |
+| `Space gdf` | Current file history |
+| `Space gdr` | Refresh Diffview |
+
+### Git (in Fugitive buffer)
+
+| Shortcut | Action |
+|----------|--------|
+| `Space P` | Git push |
+| `Space p` | Git pull --rebase |
+| `Space t` | Git push -u origin |
+
+---
+
+## 📁 File Explorer (NvimTree)
+
+| Shortcut | Action |
+|----------|--------|
+| `Space e` | Toggle file explorer |
+| `Space ee` | Focus file explorer |
+| `Space ef` | Find current file in tree |
+| `Space ec` | Collapse all folders |
+| `Space er` | Refresh tree |
+
+**Inside NvimTree:**
+- `a` - Create file/folder
+- `d` - Delete
+- `r` - Rename
+- `x` - Cut
+- `c` - Copy
+- `p` - Paste
+- `y` - Copy name
+- `Y` - Copy path
+
+---
+
+## 🪟 Window & Tab Management
 
 ### Splits
-| Keybinding | Action |
-|------------|--------|
-| `<leader>sv` | Split vertically |
-| `<leader>sh` | Split horizontally |
-| `<leader>se` | Make splits equal size |
-| `<leader>sx` | Close current split |
-| `<C-w>w` | Switch between splits |
-| `<C-w>h/j/k/l` | Navigate splits |
+
+| Shortcut | Action |
+|----------|--------|
+| `Space sv` | Split vertically |
+| `Space sh` | Split horizontally |
+| `Space se` | Make splits equal size |
+| `Space sx` | Close current split |
+| `Ctrl+h/j/k/l` | Navigate between splits |
 
 ### Tabs
-| Keybinding | Action |
-|------------|--------|
-| `<leader>to` | Open new tab |
-| `<leader>tx` | Close current tab |
-| `<leader>tn` | Next tab |
-| `<leader>tp` | Previous tab |
-| `<leader>tf` | Open current buffer in new tab |
+
+| Shortcut | Action |
+|----------|--------|
+| `Space to` | Open new tab |
+| `Space tx` | Close current tab |
+| `Space tn` | Next tab |
+| `Space tp` | Previous tab |
+| `Space tf` | Open current buffer in new tab |
+
+### Window Utilities
+
+| Shortcut | Action |
+|----------|--------|
+| `Space sm` | Maximize/minimize toggle |
+| `Space tm` | New tmux session |
 
 ---
 
-## 🔧 Formatting
+## 🤖 AI Assistant (Avante)
 
-| Keybinding | Action |
-|------------|--------|
-| `<leader>mp` | Format file with Prettier |
-| `<leader>f` | Format with LSP |
-| `:w` | Save (auto-format on save enabled) |
+| Shortcut | Action |
+|----------|--------|
+| `Space aa` | Open AI chat ⭐ |
+| `Space ar` | Refresh/retry |
+| `Space ae` | Edit with AI |
+| `Enter` | Submit message (in chat) |
+| `Ctrl+S` | Submit (insert mode) |
+| `a` | Apply AI suggestion at cursor |
+| `A` | Apply all suggestions |
+| `Tab` | Switch windows in sidebar |
 
----
-
-## 🗂️ File Operations
-
-| Keybinding | Action |
-|------------|--------|
-| `<leader>fp` | Copy file path to clipboard |
-| `<leader>x` | Make file executable |
+**Usage:** Select code → `Space aa` → Ask question → AI responds!
 
 ---
 
-## 🎛️ Utilities
+## 🔧 Utilities
 
-| Keybinding | Action |
-|------------|--------|
-| `<leader>lx` | Toggle LSP diagnostics visibility |
-| `<leader>tm` | New tmux session |
-| `<C-c>` | Clear search highlights |
+### File Operations
 
----
+| Shortcut | Action |
+|----------|--------|
+| `Space xx` | Make file executable (chmod +x) |
+| `Space fp` | Copy file path to clipboard |
 
-## 📦 Multi-Cursor Examples
+### Code Folding
 
-### Example 1: Rename Variables
-```javascript
-const userName = "John";
-const userName = getUserName();
-console.log(userName);
+| Shortcut | Action |
+|----------|--------|
+| `za` | Toggle fold |
+| `zo` | Open fold |
+| `zc` | Close fold |
+| `zR` | Open all folds |
+| `zM` | Close all folds |
 
-// 1. Cursor on 'userName'
-// 2. Press <C-d> three times
-// 3. Press 'c' to change
-// 4. Type new name
-```
+### Misc
 
-### Example 2: Add Semicolons
-```javascript
-const a = 1
-const b = 2
-const c = 3
-
-// 1. Cursor on first line
-// 2. Press <C-Down> twice
-// 3. Press 'A' (end of line)
-// 4. Type ';'
-```
-
-### Example 3: Column Editing
-```
-user1
-user2
-user3
-
-// 1. <C-v> (visual block)
-// 2. Select column with j/k
-// 3. Press 'I' to insert
-// 4. Type 'const '
-// 5. Press <Esc>
-```
+| Shortcut | Action |
+|----------|--------|
+| `Space ?` | Open this shortcuts file ⭐ |
+| `Q` | No operation (disabled) |
+| `Ctrl+U` | Page up (centered) |
+| `Ctrl+B` | Page down (centered) |
+| `J` | Join lines |
 
 ---
 
-## 🎯 Quick Reference Card
+## 🎨 Special Plugins
+
+### Harpoon (Quick File Navigation)
+
+| Shortcut | Action |
+|----------|--------|
+| `Space h` | Toggle Harpoon menu |
+| `Space a` | Add file to Harpoon |
+| `Ctrl+1/2/3/4` | Jump to Harpoon file 1/2/3/4 |
+
+### UndoTree
+
+| Shortcut | Action |
+|----------|--------|
+| `Space u` | Toggle undo tree |
+
+### Trouble (Diagnostics Panel)
+
+| Shortcut | Action |
+|----------|--------|
+| `Space tt` | Toggle Trouble |
+| `Space td` | Document diagnostics |
+| `Space tw` | Workspace diagnostics |
+
+### Todo Comments
+
+| Shortcut | Action |
+|----------|--------|
+| `Space ft` | Find TODOs |
+| `]t` | Next TODO |
+| `[t` | Previous TODO |
+
+---
+
+## ⚡ Quick Reference Card
+
+### Most Used Shortcuts
 
 ```
-┌─────────────────────────────────────────────────────┐
-│  ESSENTIAL SHORTCUTS                                │
-├─────────────────────────────────────────────────────┤
-│  DELETE LINE:          dd                           │
-│  SELECT LINE:          V                            │
-│  START/END LINE:       0 / $                        │
-│  FIND:                 /pattern                     │
-│  REPLACE:              <leader>s                    │
-│  MULTI-SELECT:         <C-d>                        │
-│  IMPLEMENT INTERFACE:  <leader>cm                   │
-│  AUTO IMPORT:          <Tab> on completion          │
-│  ADD IMPORT:           <leader>ca                   │
-│  GO TO DEFINITION:     gd                           │
-│  RENAME:               <leader>rn                   │
-│  FORMAT:               <leader>mp                   │
-│  UNDO/REDO:            u / <C-r>                    │
-└─────────────────────────────────────────────────────┘
+Navigation:
+  gd          - Go to definition ⭐
+  gr          - Show references
+  K           - Show docs
+  Ctrl-o      - Jump back
+
+Save/Buffers:
+  Ctrl+S      - Save ⭐
+  Tab         - Next buffer
+  Space x     - Close buffer
+
+Search:
+  Space ff    - Find files
+  Space fg    - Grep text
+  /           - Search in file
+
+Diagnostics:
+  Space d     - Show error
+  Space vca   - Code actions
+  Space rn    - Rename
+
+Git:
+  Space gg    - Git status
+  Space gh    - Git diff
+  Space gs    - Stage hunk
+
+AI:
+  Space aa    - Ask AI ⭐
 ```
+
+---
+
+## 🔑 Fixed Conflicts
+
+The following conflicts were resolved:
+
+| Old | New | Purpose |
+|-----|-----|---------|
+| `Space gd` | `Space gh` | Git diff (avoid conflict with gd) |
+| `Space d` | `Space dd` | Delete without yanking (avoid conflict with diagnostics) |
+| `Space x` | `Space xx` | Make file executable (avoid conflict with close buffer) |
+
+**Key Changes:**
+- **`gd`** - Now ONLY for "Go to Definition" (LSP) ✅
+- **`Space d`** - Now ONLY for showing diagnostics ✅
+- **`Space x`** - Now ONLY for closing buffer ✅
 
 ---
 
 ## 💡 Pro Tips
 
-1. **Combine commands:** `d5w` = delete 5 words, `y3j` = yank 3 lines down
-2. **Repeat last action:** `.` (dot) repeats your last change
-3. **Record macros:** `qa` = start recording to register 'a', `q` = stop, `@a` = replay
-4. **Line numbers:** `:set number` or `:set relativenumber`
-5. **Visual block:** `<C-v>` is powerful for column editing
-6. **Text objects:** Learn `i` (inner) and `a` (around) - works with w, ", (, {, [, t
+1. **Go to definition:** Place cursor on function name → Press `gd` → Jump to definition
+2. **Jump back:** After jumping with `gd`, press `Ctrl-o` to return
+3. **Save all quickly:** Press `Space W` (capital W) to save all files
+4. **Navigate buffers:** Use `Tab` and `Shift+Tab` like browser tabs
+5. **See all errors:** Press `Space D` for diagnostics list
+6. **Ask AI about code:** Select code → `Space aa` → Ask question
+7. **Find anything:** `Space ff` for files, `Space fg` for text
+8. **Git workflow:** `Space gs` (stage) → `Space gg` (commit)
+9. **Real-time errors:** Diagnostics now show WHILE typing in insert mode!
+10. **Unsaved files:** Look for orange dot (●) in bufferline at top
 
 ---
 
-## 🚀 Learn More
+## 📚 Learn More
 
-- Built-in help: `:help <command>` (e.g., `:help dd`)
-- Vim tutor: Run `vimtutor` in terminal
-- This config location: `~/.config/nvim/`
-
----
-
-## 🔧 Troubleshooting
-
-### Multi-Cursor Not Working?
-
-1. **Check if plugin is installed:**
-   ```vim
-   :Lazy
-   ```
-   Look for "vim-visual-multi" in the list
-
-2. **Reload Neovim:**
-   ```vim
-   :Lazy sync
-   :q
-   ```
-   Then restart Neovim
-
-3. **Test multi-cursor:**
-   - Type: `test test test` on a line
-   - Place cursor on first "test"
-   - Press `<C-d>` - you should see all "test" highlighted
-   - Type "hello" - all should change
-
-4. **Check for conflicts:**
-   ```vim
-   :verbose map <C-d>
-   ```
-   Should show vim-visual-multi mapping
-
-### Import Not Working?
-
-1. **Check LSP is running:**
-   ```vim
-   :LspInfo
-   ```
-
-2. **Check if TypeScript server is attached:**
-   Should see "typescript-tools" or "ts_ls"
-
-3. **Restart LSP:**
-   ```vim
-   :LspRestart
-   ```
+- `:help <command>` - Vim help for any command
+- `:Telescope keymaps` - See ALL keymaps interactively
+- `:checkhealth` - Check Neovim health
+- `:LspInfo` - Check LSP status
+- `:Mason` - Manage LSP servers & tools
+- `Space ?` - Open this shortcuts file!
 
 ---
 
-**Last Updated:** 2025
-**Your Leader Key:** `Space`
+## 🆘 Troubleshooting
 
-**Quick Help:** Press `<leader>?` to open this file anytime!
+**Diagnostics not showing?**
+- Run `:LspInfo` to check if LSP is attached
+- Run `:Mason` to check if tools are installed
+- Check if Node.js is installed: `node --version`
+
+**`gd` not working?**
+- Make sure you're on a function/variable name
+- Check LSP is attached: `:LspInfo`
+- Try restarting LSP: `Space rs`
+
+**AI not working?**
+- Check API key is set: `echo $ANTHROPIC_API_KEY`
+- Try `:Lazy` to see if avante.nvim is loaded
+
+---
+
+**Config Location:** `~/.config/nvim/`
+
+**Last Updated:** After fixing all keyboard conflicts
+
+**Your Leader Key:** `Space` (this means "Space" when you see `<leader>`)
