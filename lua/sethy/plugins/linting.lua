@@ -37,7 +37,8 @@ return {
 			end,
 		  }
 
-		vim.api.nvim_create_autocmd({ "BufEnter", "BufWritePost", "InsertLeave" }, {
+		-- Run linting on these events (real-time like VSCode)
+		vim.api.nvim_create_autocmd({ "BufEnter", "BufWritePost", "InsertLeave", "TextChanged", "TextChangedI" }, {
 			group = lint_augroup,
 			callback = function()
 				lint.try_lint()

@@ -57,8 +57,21 @@ return {
 
         local filename = {
             'filename',
-            file_status = true,
-            path = 0,
+            file_status = true,  -- Shows [+] for modified, [RO] for readonly
+            path = 1,            -- 0 = just filename, 1 = relative path, 2 = absolute path
+            symbols = {
+                modified = '[●]',      -- Text to show when file is modified
+                readonly = '[🔒]',     -- Text to show when file is readonly
+                unnamed = '[No Name]', -- Text to show for unnamed buffers
+                newfile = '[New]',     -- Text to show for new files
+            },
+            color = function()
+                -- Change color if file is modified
+                if vim.bo.modified then
+                    return { fg = '#ff9e64', gui = 'bold' }  -- Orange/yellow for modified
+                end
+                return nil
+            end,
         }
 
         local branch = {'branch', icon = {'', color={fg='#A6D4DE'}}, '|'}

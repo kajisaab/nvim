@@ -62,6 +62,10 @@ vim.opt.mouse = "a"
 -- gets rid of line with white spaces
 vim.g.editorconfig = true
 
+-- Window title - shows filename and modified status
+vim.opt.title = true
+vim.opt.titlestring = "%t %M" -- %t = filename, %M = modified flag [+]
+
 vim.api.nvim_create_autocmd("User", {
     pattern = "VeryLazy",
     callback = function()

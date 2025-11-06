@@ -12,16 +12,27 @@ return {
 
 		-- Define custom highlight groups
 
+		-- Set up pipeline for search (/ and ?)
+		wilder.set_option("pipeline", wilder.branch(
+			wilder.python_search_pipeline({
+				pattern = wilder.python_fuzzy_pattern(),
+				sorter = wilder.python_difflib_sorter(),
+				engine = "re",
+			}),
+			wilder.cmdline_pipeline(),
+			wilder.python_file_finder_pipeline({
+				file_command = {"find", ".", "-type", "f", "-printf", "%P\\n"},
+				dir_command = {"find", ".", "-type", "d", "-printf", "%P\\n"},
+			})
+		))
+
 		wilder.set_option(
 			"renderer",
 			wilder.popupmenu_renderer(wilder.popupmenu_border_theme({
 				min_width = "20%", -- minimum height of the popupmenu, can also be a number
 				max_height = "15%", -- to set a fixed height, set max_height to the same value
 				reverse = 0, -- if 1, shows the candidates from bottom to top
-				highlighter = {
-					wilder.lua_pcre2_highlighter(), -- Requires luarocks install pcre2
-					wilder.lua_fzy_highlighter(), -- Requires fzy-lua-native
-				},
+				highlighter = wilder.lua_fzy_highlighter(), -- Using fzy-lua-native (already installed)
 				highlights = {
 					default = wilder.make_hl(
 						"WilderPopupMenu",

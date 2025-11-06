@@ -42,7 +42,7 @@ return {
                 -- Spawn additional tsserver instance to calculate diagnostics on it
                 separate_diagnostic_server = true,
                 -- "change"|"insert_leave" determine when the client asks the server about diagnostic
-                publish_diagnostic_on = "insert_leave",
+                publish_diagnostic_on = "change",  -- Show diagnostics while typing in insert mode!
                 -- String|nil - specify a custom path to `tsserver.js` file, if this is nil or file under path
                 -- not exists then standard path resolution strategy is applied
                 tsserver_path = nil,

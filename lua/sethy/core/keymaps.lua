@@ -127,3 +127,59 @@ vim.keymap.set("n", "<leader>li", function()
       })
     end,
   })
+
+-- ========================================
+-- Buffer Management & Save Shortcuts
+-- ========================================
+
+-- Quick save shortcuts
+vim.keymap.set("n", "<C-s>", "<cmd>w<CR>", { desc = "Save file (Ctrl+S)", silent = true })
+vim.keymap.set("i", "<C-s>", "<Esc><cmd>w<CR>a", { desc = "Save file in insert mode", silent = true })
+vim.keymap.set("n", "<leader>w", "<cmd>w<CR>", { desc = "Save file", silent = true })
+vim.keymap.set("n", "<leader>W", "<cmd>wa<CR>", { desc = "Save ALL files", silent = true })
+
+-- Buffer navigation (easier than :bnext/:bprev)
+vim.keymap.set("n", "<S-l>", "<cmd>BufferLineCycleNext<CR>", { desc = "Next buffer" })
+vim.keymap.set("n", "<S-h>", "<cmd>BufferLineCyclePrev<CR>", { desc = "Previous buffer" })
+vim.keymap.set("n", "<Tab>", "<cmd>BufferLineCycleNext<CR>", { desc = "Next buffer (Tab)" })
+vim.keymap.set("n", "<S-Tab>", "<cmd>BufferLineCyclePrev<CR>", { desc = "Previous buffer (Shift+Tab)" })
+
+-- Close buffers
+vim.keymap.set("n", "<leader>x", "<cmd>bdelete<CR>", { desc = "Close current buffer" })
+vim.keymap.set("n", "<leader>X", "<cmd>BufferLineCloseOthers<CR>", { desc = "Close all other buffers" })
+
+-- Pick specific buffer
+vim.keymap.set("n", "<leader>bp", "<cmd>BufferLinePick<CR>", { desc = "Pick buffer" })
+
+-- Show all buffers (like VSCode Ctrl+Tab)
+vim.keymap.set("n", "<leader>bb", "<cmd>Telescope buffers<CR>", { desc = "List all buffers" })
+
+-- Pin/unpin buffer
+vim.keymap.set("n", "<leader>bP", "<cmd>BufferLineTogglePin<CR>", { desc = "Pin/Unpin buffer" })
+
+-- Sort buffers
+vim.keymap.set("n", "<leader>bs", "<cmd>BufferLineSortByDirectory<CR>", { desc = "Sort buffers by directory" })
+
+-- Show modified buffers warning on quit
+vim.api.nvim_create_autocmd("QuitPre", {
+  callback = function()
+    local modified_buffers = vim.tbl_filter(function(buf)
+      return vim.api.nvim_buf_get_option(buf, 'modified')
+    end, vim.api.nvim_list_bufs())
+
+    if #modified_buffers > 0 then
+      local choice = vim.fn.confirm(
+        "You have unsaved changes in " .. #modified_buffers .. " file(s)!\nDo you want to save them?",
+        "&Yes\n&No\n&Cancel",
+        3
+      )
+
+      if choice == 1 then -- Yes
+        vim.cmd('wa')  -- Save all
+      elseif choice == 3 then -- Cancel
+        vim.cmd('stopinsert')
+        return true
+      end
+    end
+  end,
+})

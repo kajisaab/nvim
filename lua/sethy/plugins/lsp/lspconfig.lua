@@ -167,9 +167,25 @@ return {
             signs = {
                 text = signs -- Enable signs in the gutter
             },
-            virtual_text = true,  -- Specify Enable virtual text for diagnostics
-            underline = true,     -- Specify Underline diagnostics
-            update_in_insert = false,  -- Keep diagnostics active in insert mode
+            virtual_text = true,  -- Enable virtual text for diagnostics (like VSCode)
+            underline = true,     -- Underline diagnostics
+            update_in_insert = true,  -- Update diagnostics while typing (like VSCode)
+            severity_sort = true,  -- Sort by severity
+            float = {
+                border = "rounded",
+                source = "always",  -- Show source of diagnostic
+                header = "",
+                prefix = "",
+            },
+        })
+
+        -- Force diagnostics to update in insert mode (aggressive real-time diagnostics)
+        vim.api.nvim_create_autocmd({ "TextChangedI", "TextChangedP" }, {
+            group = vim.api.nvim_create_augroup("DiagnosticsInsertMode", { clear = true }),
+            callback = function()
+                -- Trigger diagnostic update while typing
+                vim.diagnostic.show(nil, 0)
+            end,
         })
 
 
