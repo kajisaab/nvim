@@ -46,8 +46,31 @@ return {
 		-- Keymaps
 
 		vim.keymap.set("n", "<leader>ff", "<cmd>Telescope find_files<CR>", { desc = "Find Files" })
-    vim.keymap.set("n", "<leader>fg", "<cmd>Telescope live_grep<CR>", { desc = "Live Grep" })
-    vim.keymap.set("n", "<leader>fb", "<cmd>Telescope buffers<CR>", { desc = "Find Buffers" })
-    vim.keymap.set("n", "<leader>fr", "<cmd>Telescope oldfiles<CR>", { desc = "Recent Files" })
+		vim.keymap.set("n", "<leader>fg", "<cmd>Telescope live_grep<CR>", { desc = "Live Grep" })
+		vim.keymap.set("n", "<leader>fb", "<cmd>Telescope buffers<CR>", { desc = "Find Buffers" })
+		vim.keymap.set("n", "<leader>fr", "<cmd>Telescope oldfiles<CR>", { desc = "Recent Files" })
+
+		-- Alternative search keybindings
+		vim.keymap.set("n", "<leader>fw", "<cmd>Telescope grep_string<CR>", { desc = "Find Word under cursor" })
+		vim.keymap.set("n", "<leader>fc", "<cmd>Telescope commands<CR>", { desc = "Find Commands" })
+		vim.keymap.set("n", "<leader>fh", "<cmd>Telescope help_tags<CR>", { desc = "Find Help" })
+
+		-- VSCode-style global search (Ctrl+Shift+F equivalent)
+		vim.keymap.set("n", "<C-f>", function()
+			builtin.live_grep({
+				prompt_title = "Search in Project",
+				vimgrep_arguments = {
+					"rg",
+					"--color=never",
+					"--no-heading",
+					"--with-filename",
+					"--line-number",
+					"--column",
+					"--smart-case",
+					"--hidden",
+					"--glob=!.git/",
+				}
+			})
+		end, { desc = "Global Search (like VSCode)" })
     end,
 }
