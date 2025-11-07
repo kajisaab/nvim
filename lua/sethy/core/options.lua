@@ -4,6 +4,10 @@
 vim.cmd("let g:netrw_banner = 0 ")
 
 vim.opt.guicursor = ""
+
+-- Font configuration (for GUI clients like Neovide, neovim-qt, goneovim)
+vim.opt.guifont = "Monaspace Radon:h12"
+
 vim.opt.nu = true
 vim.opt.relativenumber = true
 
