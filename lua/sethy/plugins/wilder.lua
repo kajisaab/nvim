@@ -12,17 +12,14 @@ return {
 
 		-- Define custom highlight groups
 
-		-- Set up pipeline for search (/ and ?)
+		-- Set up pipeline using Lua-based search (no Python dependency)
 		wilder.set_option("pipeline", wilder.branch(
-			wilder.python_search_pipeline({
-				pattern = wilder.python_fuzzy_pattern(),
-				sorter = wilder.python_difflib_sorter(),
-				engine = "re",
+			wilder.cmdline_pipeline({
+				fuzzy = 1,
+				fuzzy_filter = wilder.lua_fzy_filter(),
 			}),
-			wilder.cmdline_pipeline(),
-			wilder.python_file_finder_pipeline({
-				file_command = {"find", ".", "-type", "f", "-printf", "%P\\n"},
-				dir_command = {"find", ".", "-type", "d", "-printf", "%P\\n"},
+			wilder.vim_search_pipeline({
+				fuzzy = 1,
 			})
 		))
 

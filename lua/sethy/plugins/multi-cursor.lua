@@ -12,9 +12,9 @@ return {
 
         -- VSCode-like keybindings
         vim.g.VM_maps = {
-            -- Find and select next occurrence (like Ctrl+D in VSCode)
-            ["Find Under"] = "<C-d>",
-            ["Find Subword Under"] = "<C-d>",
+            -- Find and select next occurrence (like Cmd+D in VSCode on Mac)
+            ["Find Under"] = "<D-d>",
+            ["Find Subword Under"] = "<D-d>",
 
             -- Skip current and find next
             ["Skip Region"] = "<C-x>",

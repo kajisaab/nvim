@@ -7,10 +7,12 @@ vim.keymap.set("v", "J", ":m '>+1<CR>gv=gv", { desc = "moves lines down in visua
 vim.keymap.set("v", "K", ":m '<-2<CR>gv=gv", { desc = "moves lines up in visual selection" })
 
 vim.keymap.set("n", "J", "mzJ`z")
--- Note: <C-d> is used for multi-cursor (select next occurrence)
--- Use <C-f> for page down instead
-vim.keymap.set("n", "<C-b>", "<C-b>zz", { desc = "move up half page with cursor centered" })
-vim.keymap.set("n", "<C-u>", "<C-u>zz", { desc = "move up in buffer with cursor centered" })
+-- Jump 10 lines up/down with Ctrl+u/d (multi-cursor moved to Cmd+d)
+vim.keymap.set("n", "<C-d>", "10jzz", { desc = "Jump 10 lines down", silent = true })
+vim.keymap.set("n", "<C-u>", "10kzz", { desc = "Jump 10 lines up", silent = true })
+-- Half-page scroll with Ctrl+j/k (centered)
+vim.keymap.set("n", "<C-j>", "<C-d>zz", { desc = "Half page down with cursor centered", silent = true })
+vim.keymap.set("n", "<C-k>", "<C-u>zz", { desc = "Half page up with cursor centered", silent = true })
 vim.keymap.set("n", "n", "nzzzv")
 vim.keymap.set("n", "N", "Nzzzv")
 
@@ -33,6 +35,11 @@ vim.keymap.set({ "n", "v" }, "<leader>dd", [["_d]], { desc = "Delete without yan
 -- ctrl c as escape cuz Im lazy to reach up to the esc key
 vim.keymap.set("i", "jk", "<Esc>")
 vim.keymap.set("n", "<C-c>", ":nohl<CR>", { desc = "Clear search hl", silent = true })
+
+-- VSCode-style comment toggle (Ctrl+/)
+vim.keymap.set("n", "<C-/>", "gcc", { desc = "Toggle comment", remap = true })
+vim.keymap.set("v", "<C-/>", "gc", { desc = "Toggle comment", remap = true })
+vim.keymap.set("i", "<C-/>", "<Esc>gcca", { desc = "Toggle comment", remap = true })
 -- format without prettier using the built in
 vim.keymap.set("n", "<leader>f", function() vim.lsp.buf.format() end)
 
@@ -96,8 +103,8 @@ vim.keymap.set("n", "<leader>fp", function()
 end, { desc = "Copy file path to clipboard" })
 
 -- Open shortcuts documentation
-vim.keymap.set("n", "<leader>?", "<cmd>e ~/.config/nvim/SHORTCUTS.md<CR>",
-  { desc = "Open shortcuts cheatsheet" })
+vim.keymap.set("n", "<leader>?", "<cmd>e ~/.config/nvim/KEYMAPS.md<CR>",
+  { desc = "Open keymaps reference" })
 
 -- Toggle LSP diagnostics visibility
 local isLspDiagnosticsVisible = true
@@ -185,3 +192,4 @@ vim.api.nvim_create_autocmd("QuitPre", {
     end
   end,
 })
+
