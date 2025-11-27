@@ -63,6 +63,22 @@
 -- Terminal Float State (taught by tj)
 vim.keymap.set("t", "<esc><esc>", "<c-\\><c-n>")
 
+-- Fix terminal copy/paste in terminal mode
+-- Exit terminal mode to select text in visual mode, then copy with y
+vim.keymap.set("t", "<C-v>", "<C-\\><C-n>", { desc = "Exit terminal mode to select text" })
+
+-- In terminal normal mode, allow entering visual mode to select and copy text
+vim.api.nvim_create_autocmd("TermOpen", {
+    pattern = "*",
+    callback = function()
+        local opts = { buffer = 0 }
+        -- Use system clipboard for yanking in terminal buffers
+        vim.keymap.set("v", "y", '"+y', opts)
+        vim.keymap.set("v", "<leader>y", '"+y', opts)
+        vim.keymap.set("n", "yy", '"+yy', opts)
+    end,
+})
+
 local state = {
     floating = {
         buf = -1,

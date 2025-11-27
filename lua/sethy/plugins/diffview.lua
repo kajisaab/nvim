@@ -514,10 +514,15 @@ return {
     })
 
     -- Keymaps for diffview
-    vim.keymap.set('n', '<leader>gdo', '<cmd>DiffviewOpen<cr>', { desc = 'Open Diffview' })
-    vim.keymap.set('n', '<leader>gdc', '<cmd>DiffviewClose<cr>', { desc = 'Close Diffview' })
-    vim.keymap.set('n', '<leader>gdh', '<cmd>DiffviewFileHistory<cr>', { desc = 'File History' })
-    vim.keymap.set('n', '<leader>gdf', '<cmd>DiffviewFileHistory %<cr>', { desc = 'Current File History' })
-    vim.keymap.set('n', '<leader>gdr', '<cmd>DiffviewRefresh<cr>', { desc = 'Refresh Diffview' })
+    vim.keymap.set('n', '<leader>gdo', '<cmd>DiffviewOpen<cr>', { desc = 'Diffview: Open' })
+    vim.keymap.set('n', '<leader>gdc', '<cmd>DiffviewClose<cr>', { desc = 'Diffview: Close' })
+    vim.keymap.set('n', '<leader>gdh', '<cmd>DiffviewFileHistory<cr>', { desc = 'Diffview: All File History' })
+    vim.keymap.set('n', '<leader>gdf', '<cmd>DiffviewFileHistory %<cr>', { desc = 'Diffview: Current File History' })
+    vim.keymap.set('n', '<leader>gdr', '<cmd>DiffviewRefresh<cr>', { desc = 'Diffview: Refresh' })
+
+    -- Quick access keybindings (like VSCode)
+    vim.keymap.set('n', '<leader>gh', '<cmd>DiffviewFileHistory %<cr>', { desc = 'Git: File History (Timeline)' })
+    vim.keymap.set('v', '<leader>gh', ":'<,'>DiffviewFileHistory<cr>", { desc = 'Git: Selection History' })
+    vim.keymap.set('n', '<leader>gb', '<cmd>DiffviewFileHistory %<cr>', { desc = 'Git: File Blame/History' })
   end,
 }

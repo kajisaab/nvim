@@ -322,6 +322,47 @@ return {
             },
         })
 
+        -- gopls (Go)
+        vim.lsp.config("gopls", {
+            capabilities = capabilities,
+            settings = {
+                gopls = {
+                    analyses = {
+                        unusedparams = true,
+                        shadow = true,
+                    },
+                    staticcheck = true,
+                    gofumpt = true,
+                },
+            },
+        })
+
+        -- rust_analyzer (Rust)
+        vim.lsp.config("rust_analyzer", {
+            capabilities = capabilities,
+            settings = {
+                ["rust-analyzer"] = {
+                    cargo = {
+                        allFeatures = true,
+                        loadOutDirsFromCheck = true,
+                        runBuildScripts = true,
+                    },
+                    checkOnSave = {
+                        command = "clippy",
+                        allFeatures = true,
+                    },
+                    procMacro = {
+                        enable = true,
+                        ignored = {
+                            ["async-trait"] = { "async_trait" },
+                            ["napi-derive"] = { "napi" },
+                            ["async-recursion"] = { "async_recursion" },
+                        },
+                    },
+                },
+            },
+        })
+
 
 
 

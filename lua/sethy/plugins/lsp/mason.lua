@@ -43,6 +43,8 @@ return {
                 "emmet_ls",
                 "emmet_language_server",
                 "clangd",    -- C/C++ LSP
+                "gopls",     -- Go LSP
+                "rust_analyzer", -- Rust LSP
                 "jdtls",     -- Java LSP
                 "marksman",
             },
@@ -57,6 +59,14 @@ return {
                 "pylint",   -- python linter
                 "pyright",  -- python LSP
                 "clangd",   -- C/C++ LSP
+                "clang-format", -- C/C++ formatter
+                "cpplint",  -- C/C++ linter
+                "gopls",    -- Go LSP
+                "gofumpt",  -- Go formatter (stricter than gofmt)
+                "goimports", -- Go imports formatter
+                "golangci-lint", -- Go linter
+                "rust_analyzer", -- Rust LSP
+                "rustfmt",  -- Rust formatter
                 "jdtls",    -- Java LSP
                 "denols",
                 "eslint_d",

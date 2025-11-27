@@ -158,6 +158,8 @@ Complete reference of all custom keymaps in this Neovim configuration.
 | Keys | Mode | Description |
 |------|------|-------------|
 | `Esc Esc` | t | Exit terminal mode |
+| `Ctrl+v` | t | Exit to select text (for copying) |
+| `y` | v | Yank to system clipboard (in terminal) |
 | `Ctrl+b` | n,t | Toggle tmux floating terminal |
 | `Ctrl+w s` | t | Split terminal horizontally |
 | `Ctrl+w v` | t | Split terminal vertically |
@@ -340,15 +342,27 @@ Complete reference of all custom keymaps in this Neovim configuration.
 
 ### Git Conflict
 
+**Quick Conflict Resolution:**
+
+| Keys | Mode | Description |
+|------|------|-------------|
+| `co` | n | Choose Ours (Current Branch) |
+| `ct` | n | Choose Theirs (Incoming Branch) |
+| `cb` | n | Choose Both |
+| `c0` | n | Choose None |
+| `]x` | n | Next Conflict |
+| `[x` | n | Previous Conflict |
+| `<leader>cl` | n | List All Conflicts |
+
+**Alternative (Leader-based):**
+
 | Keys | Mode | Description |
 |------|------|-------------|
 | `<leader>gco` | n | Choose Ours (Current Branch) |
 | `<leader>gct` | n | Choose Theirs (Incoming Branch) |
 | `<leader>gcb` | n | Choose Both |
 | `<leader>gc0` | n | Choose None |
-| `<leader>gcn` | n | Next Conflict |
-| `<leader>gcp` | n | Previous Conflict |
-| `<leader>gcl` | n | List Conflicts in Quickfix |
+| `<leader>gcl` | n | List All Conflicts |
 
 ### Formatting (Conform)
 
@@ -362,15 +376,24 @@ Complete reference of all custom keymaps in this Neovim configuration.
 |------|------|-------------|
 | `<leader>xe` | n,v | Wrap with Emmet abbreviation |
 
-### Diffview
+### Git History & Timeline
 
-**Main Diffview:**
+**Quick Access (Like VSCode):**
+
+| Keys | Mode | Description |
+|------|------|-------------|
+| `<leader>gh` | n | Git File History (Timeline) |
+| `<leader>gh` | v | Git Selection History |
+| `<leader>gb` | n | Git File Blame/History |
+| `<leader>gm` | n | Show commit message at cursor |
+
+**Diffview Commands:**
 
 | Keys | Mode | Description |
 |------|------|-------------|
 | `<leader>gdo` | n | Open Diffview |
 | `<leader>gdc` | n | Close Diffview |
-| `<leader>gdh` | n | File History |
+| `<leader>gdh` | n | All File History |
 | `<leader>gdf` | n | Current File History |
 | `<leader>gdr` | n | Refresh Diffview |
 
@@ -417,10 +440,42 @@ Complete reference of all custom keymaps in this Neovim configuration.
 
 ### Debugging (DAP)
 
+**Core Debugging:**
+
 | Keys | Mode | Description |
 |------|------|-------------|
 | `<leader>db` | n | Toggle breakpoint |
-| `<leader>dc` | n | Continue execution |
+| `<leader>dc` | n | Continue/Start debugging |
+| `<leader>dso` | n | Step over |
+| `<leader>dsi` | n | Step into |
+| `<leader>dsx` | n | Step out |
+| `<leader>dr` | n | Open REPL |
+| `<leader>dl` | n | Run last configuration |
+| `<leader>dt` | n | Toggle DAP UI |
+
+**Language-Specific Run/Build:**
+
+**C/C++:**
+| Keys | Mode | Description |
+|------|------|-------------|
+| `<leader>cc` | n | Compile and run |
+| `<leader>cb` | n | Compile only |
+
+**Go:**
+| Keys | Mode | Description |
+|------|------|-------------|
+| `<leader>gr` | n | Run Go file |
+| `<leader>gb` | n | Build Go project |
+| `<leader>gt` | n | Run Go tests |
+
+**Rust:**
+| Keys | Mode | Description |
+|------|------|-------------|
+| `<leader>rr` | n | Cargo run |
+| `<leader>rb` | n | Cargo build |
+| `<leader>rt` | n | Cargo test |
+| `<leader>rc` | n | Cargo check |
+| `<leader>rcl` | n | Cargo clippy |
 
 ### Markdown
 
@@ -483,5 +538,41 @@ Complete reference of all custom keymaps in this Neovim configuration.
 
 ---
 
+## Language Support
+
+Your Neovim is configured with full LSP, formatting, linting, and debugging support for:
+
+- **C/C++**: clangd LSP, clang-format, cpplint, codelldb debugger
+- **Python**: pyright LSP, ruff formatter, pylint linter, debugpy debugger
+- **Go**: gopls LSP, gofumpt + goimports formatters, golangci-lint, delve debugger
+- **Rust**: rust-analyzer LSP, rustfmt, clippy, codelldb debugger
+- **TypeScript/JavaScript**: typescript-tools, prettier, eslint_d
+- **Java**: jdtls LSP with full support
+- **Lua**: lua_ls LSP, stylua formatter
+
+All formatters run automatically on save!
+
+---
+
+## Quick Tips
+
+**Terminal Copy/Paste:**
+1. Press `Ctrl+v` in terminal mode to exit to normal mode
+2. Enter visual mode with `v` and select text
+3. Press `y` to copy to system clipboard
+4. Paste anywhere with `Cmd+v` (macOS) or `Ctrl+v` (Linux/Windows)
+
+**Merge Conflict Resolution:**
+1. When you see conflicts, use `]x` to jump to next conflict
+2. Use `co` (ours), `ct` (theirs), `cb` (both), or `c0` (none)
+3. Save and continue!
+
+**View File History (Like VSCode Timeline):**
+1. Press `<leader>gh` to see file history
+2. Navigate with `j`/`k`, press `Enter` to see changes
+3. Press `q` to close
+
+---
+
 *This document was auto-generated from the Neovim configuration files.*
-*Last updated: 2025-11-17*
+*Last updated: 2025-11-27*

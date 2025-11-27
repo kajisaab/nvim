@@ -41,6 +41,10 @@ return {
                 markdown = { "prettier" },
                 ["markdown.mdx"] = { "prettier", "markdownlint-cli2", "markdown-toc" },
                 sh = { "shfmt" },
+                c = { "clang_format" },
+                cpp = { "clang_format" },
+                go = { "goimports", "gofumpt" },
+                rust = { "rustfmt" },
 			},
 			format_on_save = function(bufnr)
                 -- Get the file type
@@ -56,8 +60,17 @@ return {
                     }
                 end
 
+                -- Auto-format C/C++, Go, Rust files on save
+                if ft == "c" or ft == "cpp" or ft == "go" or ft == "rust" then
+                    return {
+                        lsp_fallback = true,
+                        async = false,
+                        timeout_ms = 2000,
+                    }
+                end
+
                 -- Auto-format other supported file types
-                if ft == "css" or ft == "html" or ft == "json" or ft == "yaml" or ft == "lua" or ft == "svelte" then
+                if ft == "css" or ft == "html" or ft == "json" or ft == "yaml" or ft == "lua" or ft == "svelte" or ft == "python" then
                     return {
                         lsp_fallback = true,
                         async = false,
