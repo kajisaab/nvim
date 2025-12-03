@@ -218,6 +218,7 @@ return {
                 },
             },
         })
+        vim.lsp.enable("lua_ls")
 
         -- emmet_ls
         vim.lsp.config("emmet_ls", {
@@ -233,6 +234,7 @@ return {
                 "svelte",
             },
         })
+        vim.lsp.enable("emmet_ls")
 
         -- emmet_language_server
         vim.lsp.config("emmet_language_server", {
@@ -261,12 +263,14 @@ return {
                 variables = {},
             },
         })
+        vim.lsp.enable("emmet_language_server")
 
         -- denols
         vim.lsp.config("denols", {
             capabilities = capabilities,
             root_patterns = { "deno.json", "deno.jsonc" },
         })
+        vim.lsp.enable("denols")
 
         -- ts_ls (replaces tsserver)
         -- NOTE: Disabled in favor of typescript-tools.nvim for better auto-import experience
@@ -307,6 +311,7 @@ return {
                 "--function-arg-placeholders",
             },
         })
+        vim.lsp.enable("clangd")
 
         -- pyright (Python)
         vim.lsp.config("pyright", {
@@ -321,6 +326,7 @@ return {
                 },
             },
         })
+        vim.lsp.enable("pyright")
 
         -- gopls (Go)
         vim.lsp.config("gopls", {
@@ -336,10 +342,17 @@ return {
                 },
             },
         })
+        vim.lsp.enable("gopls")
 
         -- rust_analyzer (Rust)
         vim.lsp.config("rust_analyzer", {
             capabilities = capabilities,
+            filetypes = { "rust" },
+            root_dir = function(fname)
+                local lspconfig_util = require("lspconfig.util")
+                return lspconfig_util.root_pattern("Cargo.toml", "rust-project.json")(fname)
+                    or lspconfig_util.find_git_ancestor(fname)
+            end,
             settings = {
                 ["rust-analyzer"] = {
                     cargo = {
@@ -359,9 +372,27 @@ return {
                             ["async-recursion"] = { "async_recursion" },
                         },
                     },
+                    completion = {
+                        autoimport = {
+                            enable = true,
+                        },
+                        autoself = {
+                            enable = true,
+                        },
+                    },
+                    inlayHints = {
+                        enable = true,
+                    },
+                    diagnostics = {
+                        enable = true,
+                        experimental = {
+                            enable = true,
+                        },
+                    },
                 },
             },
         })
+        vim.lsp.enable("rust_analyzer")
 
 
 

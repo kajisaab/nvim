@@ -9,7 +9,7 @@ vim.opt.guicursor = ""
 vim.opt.guifont = "Monaspace Radon:h12"
 
 vim.opt.nu = true
-vim.opt.relativenumber = true
+vim.opt.relativenumber = false
 
 vim.opt.encoding = "utf-8"
 vim.opt.fileencoding = "utf-8"
