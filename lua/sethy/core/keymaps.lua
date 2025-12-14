@@ -7,9 +7,9 @@ vim.keymap.set("v", "J", ":m '>+1<CR>gv=gv", { desc = "moves lines down in visua
 vim.keymap.set("v", "K", ":m '<-2<CR>gv=gv", { desc = "moves lines up in visual selection" })
 
 vim.keymap.set("n", "J", "mzJ`z")
--- Jump 10 lines up/down with Ctrl+u/d (multi-cursor moved to Cmd+d)
-vim.keymap.set("n", "<C-d>", "10jzz", { desc = "Jump 10 lines down", silent = true })
-vim.keymap.set("n", "<C-u>", "10kzz", { desc = "Jump 10 lines up", silent = true })
+-- Jump 10 lines up/down with Alt+j/k (Ctrl+d is used for multi-cursor)
+vim.keymap.set("n", "<A-j>", "10jzz", { desc = "Jump 10 lines down", silent = true })
+vim.keymap.set("n", "<A-k>", "10kzz", { desc = "Jump 10 lines up", silent = true })
 -- Half-page scroll with Ctrl+j/k (centered)
 vim.keymap.set("n", "<C-j>", "<C-d>zz", { desc = "Half page down with cursor centered", silent = true })
 vim.keymap.set("n", "<C-k>", "<C-u>zz", { desc = "Half page up with cursor centered", silent = true })
@@ -36,6 +36,24 @@ vim.keymap.set({ "n", "v" }, "<leader>dd", [["_d]], { desc = "Delete without yan
 vim.keymap.set("i", "jk", "<Esc>")
 vim.keymap.set("n", "<C-c>", ":nohl<CR>", { desc = "Clear search hl", silent = true })
 
+-- IDE-style word deletion with Ctrl+Backspace (in insert mode)
+vim.keymap.set("i", "<C-BS>", "<C-w>", { desc = "Delete word backward (Ctrl+Backspace)" })
+vim.keymap.set("i", "<C-H>", "<C-w>", { desc = "Delete word backward (Ctrl+Backspace alternative)" })
+
+-- Word navigation with Alt+h/l (Vim-style, no conflicts)
+vim.keymap.set("n", "<A-h>", "b", { desc = "Move to previous word", silent = true })
+vim.keymap.set("n", "<A-l>", "w", { desc = "Move to next word", silent = true })
+vim.keymap.set("i", "<A-h>", "<C-o>b", { desc = "Move to previous word in insert mode", silent = true })
+vim.keymap.set("i", "<A-l>", "<C-o>w", { desc = "Move to next word in insert mode", silent = true })
+vim.keymap.set("v", "<A-h>", "b", { desc = "Select to previous word in visual mode", silent = true })
+vim.keymap.set("v", "<A-l>", "w", { desc = "Select to next word in visual mode", silent = true })
+
+-- Word selection with Alt+Shift+h/l
+vim.keymap.set("n", "<A-S-h>", "vb", { desc = "Select to previous word", silent = true })
+vim.keymap.set("n", "<A-S-l>", "ve", { desc = "Select to next word", silent = true })
+vim.keymap.set("v", "<A-S-h>", "b", { desc = "Extend selection to previous word", silent = true })
+vim.keymap.set("v", "<A-S-l>", "e", { desc = "Extend selection to next word", silent = true })
+
 -- VSCode-style comment toggle (Ctrl+/)
 vim.keymap.set("n", "<C-/>", "gcc", { desc = "Toggle comment", remap = true })
 vim.keymap.set("v", "<C-/>", "gc", { desc = "Toggle comment", remap = true })
@@ -54,6 +72,9 @@ vim.keymap.set("n", "<leader>tm", "<cmd>silent !tmux neww tmux-sessionizer<CR>",
 vim.keymap.set("n", "x", '"_x', opts)
 
 -- Find and Replace operations
+-- IDE-style find (Ctrl+F) - opens Telescope live grep
+vim.keymap.set("n", "<C-f>", "<cmd>Telescope live_grep<CR>", { desc = "Find in files (Ctrl+F)" })
+
 -- Replace the word cursor is on globally (like Ctrl+H in VSCode)
 vim.keymap.set("n", "<leader>s", [[:%s/\<<C-r><C-w>\>/<C-r><C-w>/gI<Left><Left><Left>]],
     { desc = "Replace word cursor is on globally" })

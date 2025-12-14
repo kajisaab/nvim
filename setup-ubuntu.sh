@@ -48,7 +48,7 @@ verify_command() {
 # Function to verify package is installed
 verify_package() {
     local package=$1
-    if dpkg -l | grep -q "^ii  $package "; then
+    if dpkg -l | grep -q "^ii  $package"; then
         print_success "$package is installed"
         return 0
     else
@@ -216,12 +216,19 @@ install_editors() {
     verify_command "vim" "Vim" || return 1
 
     print_info "Installing Visual Studio Code..."
-    wget -qO- https://packages.microsoft.com/keys/microsoft.asc | gpg --dearmor > packages.microsoft.gpg
-    sudo install -D -o root -g root -m 644 packages.microsoft.gpg /etc/apt/keyrings/packages.microsoft.gpg
-    echo "deb [arch=amd64,arm64,armhf signed-by=/etc/apt/keyrings/packages.microsoft.gpg] https://packages.microsoft.com/repos/code stable main" | sudo tee /etc/apt/sources.list.d/vscode.list > /dev/null
-    rm -f packages.microsoft.gpg
-    sudo apt update
-    sudo apt install -y code
+    if ! command -v code &> /dev/null; then
+        # Remove any conflicting repository configurations
+        sudo rm -f /etc/apt/sources.list.d/vscode.list
+
+        wget -qO- https://packages.microsoft.com/keys/microsoft.asc | gpg --dearmor > packages.microsoft.gpg
+        sudo install -D -o root -g root -m 644 packages.microsoft.gpg /etc/apt/keyrings/packages.microsoft.gpg
+        echo "deb [arch=amd64,arm64,armhf signed-by=/etc/apt/keyrings/packages.microsoft.gpg] https://packages.microsoft.com/repos/code stable main" | sudo tee /etc/apt/sources.list.d/vscode.list > /dev/null
+        rm -f packages.microsoft.gpg
+        sudo apt update
+        sudo apt install -y code
+    else
+        print_info "Visual Studio Code is already installed."
+    fi
 
     verify_command "code" "Visual Studio Code"
 }
@@ -237,7 +244,7 @@ install_python() {
     verify_command "pip3" "pip" || return 1
 
     print_info "Installing Python packages for Neovim..."
-    pip3 install --user pynvim debugpy black isort pylint mypy ruff
+    pip3 install --user --break-system-packages pynvim debugpy black isort pylint mypy ruff
 
     # Verify Python packages
     python3 -c "import pynvim" 2>/dev/null && print_success "pynvim is installed" || print_error "pynvim installation failed"

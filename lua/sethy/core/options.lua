@@ -3,10 +3,27 @@
 -- vim.cmd("let g:netrw_liststyle = 3")
 vim.cmd("let g:netrw_banner = 0 ")
 
+-- Configure nvm Node.js path for Neovim
+-- This ensures Neovim plugins can access npm and node from nvm
+local nvm_dir = vim.fn.expand("$HOME/.nvm/versions/node")
+if vim.fn.isdirectory(nvm_dir) == 1 then
+	-- Use the latest installed version (sorted alphabetically, which works for version numbers)
+	local versions = vim.fn.globpath(nvm_dir, "v*", false, true)
+	if #versions > 0 then
+		-- Sort versions to get the latest
+		table.sort(versions)
+		local latest_version = versions[#versions]
+		local nvm_node_path = latest_version .. "/bin"
+		if vim.fn.isdirectory(nvm_node_path) == 1 then
+			vim.env.PATH = nvm_node_path .. ":" .. vim.env.PATH
+		end
+	end
+end
+
 vim.opt.guicursor = ""
 
 -- Font configuration (for GUI clients like Neovide, neovim-qt, goneovim)
-vim.opt.guifont = "Monaspace Radon:h12"
+vim.opt.guifont = "Monaspace Radon:h10"
 
 vim.opt.nu = true
 vim.opt.relativenumber = false
@@ -40,9 +57,9 @@ vim.opt.scrolloff = 8
 vim.opt.signcolumn = "yes"
 
 -- Enable folding ( setup in nvim-ufo )
-vim.o.foldenable = true     -- Enable folding by default
+vim.o.foldenable = true -- Enable folding by default
 vim.o.foldmethod = "manual" -- Default fold method (change as needed)
-vim.o.foldlevel = 99        -- Open most folds by default
+vim.o.foldlevel = 99 -- Open most folds by default
 vim.o.foldcolumn = "0"
 
 -- backspace
@@ -71,18 +88,20 @@ vim.opt.title = true
 vim.opt.titlestring = "%t %M" -- %t = filename, %M = modified flag [+]
 
 vim.api.nvim_create_autocmd("User", {
-    pattern = "VeryLazy",
-    callback = function()
-        vim.api.nvim_create_autocmd("BufWinEnter", {
-            pattern = "*",
-            callback = function()
-                local ok, view = pcall(require, "nvim-tree.view")
-                if not ok then return end
+	pattern = "VeryLazy",
+	callback = function()
+		vim.api.nvim_create_autocmd("BufWinEnter", {
+			pattern = "*",
+			callback = function()
+				local ok, view = pcall(require, "nvim-tree.view")
+				if not ok then
+					return
+				end
 
-                if vim.fn.winnr('$') == 1 and view.is_visible() then
-                    vim.cmd('vsplit')
-                end
-            end,
-        })
-    end,
+				if vim.fn.winnr("$") == 1 and view.is_visible() then
+					vim.cmd("vsplit")
+				end
+			end,
+		})
+	end,
 })

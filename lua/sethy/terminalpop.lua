@@ -61,21 +61,42 @@
 
 
 -- Terminal Float State (taught by tj)
+-- Double ESC to exit terminal mode to normal mode
 vim.keymap.set("t", "<esc><esc>", "<c-\\><c-n>")
 
--- Fix terminal copy/paste in terminal mode
--- Exit terminal mode to select text in visual mode, then copy with y
-vim.keymap.set("t", "<C-v>", "<C-\\><C-n>", { desc = "Exit terminal mode to select text" })
-
--- In terminal normal mode, allow entering visual mode to select and copy text
+-- Terminal text selection and copy configuration
+-- HOW TO SELECT AND COPY TEXT IN TERMINAL:
+-- Method 1 (Mouse): Just click and drag with your mouse - selection stays within the window
+-- Method 2 (Keyboard):
+--   1. Press <esc><esc> to enter normal mode
+--   2. Use v (visual), V (line visual), or Ctrl+v (block visual) to start selection
+--   3. Move cursor to select text
+--   4. Press y to copy to system clipboard
 vim.api.nvim_create_autocmd("TermOpen", {
     pattern = "*",
     callback = function()
         local opts = { buffer = 0 }
-        -- Use system clipboard for yanking in terminal buffers
+
+        -- Enable mouse support for this terminal buffer (respects window boundaries)
+        vim.opt_local.mouse = "a"
+        vim.opt_local.scrollback = 10000
+
+        -- Allow mouse selection to automatically copy to clipboard
+        vim.opt_local.clipboard = "unnamedplus"
+
+        -- Automatically copy selected text to system clipboard in visual mode
         vim.keymap.set("v", "y", '"+y', opts)
         vim.keymap.set("v", "<leader>y", '"+y', opts)
         vim.keymap.set("n", "yy", '"+yy', opts)
+
+        -- Quick paste from clipboard in terminal normal mode
+        vim.keymap.set("n", "p", '"+p', opts)
+        vim.keymap.set("n", "P", '"+P', opts)
+
+        -- Enable visual mode selection with mouse in terminal normal mode
+        vim.keymap.set("n", "v", "v", opts)
+        vim.keymap.set("n", "V", "V", opts)
+        vim.keymap.set("n", "<C-v>", "<C-v>", opts)
     end,
 })
 

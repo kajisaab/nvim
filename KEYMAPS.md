@@ -63,12 +63,22 @@ Complete reference of all custom keymaps in this Neovim configuration.
 | Keys | Mode | Description |
 |------|------|-------------|
 | `J` | n | Join lines |
-| `Ctrl+d` | n | Jump 10 lines down |
-| `Ctrl+u` | n | Jump 10 lines up |
+| `Alt+j` | n | Jump 10 lines down |
+| `Alt+k` | n | Jump 10 lines up |
 | `Ctrl+j` | n | Half page down with cursor centered |
 | `Ctrl+k` | n | Half page up with cursor centered |
 | `n` | n | Next search result (centered) |
 | `N` | n | Previous search result (centered) |
+| `Alt+h` | n | Move to previous word |
+| `Alt+l` | n | Move to next word |
+| `Alt+h` | i | Move to previous word (insert mode) |
+| `Alt+l` | i | Move to next word (insert mode) |
+| `Alt+h` | v | Select to previous word |
+| `Alt+l` | v | Select to next word |
+| `Alt+Shift+h` | n | Select to previous word |
+| `Alt+Shift+l` | n | Select to next word |
+| `Alt+Shift+h` | v | Extend selection to previous word |
+| `Alt+Shift+l` | v | Extend selection to next word |
 
 ### Delete & Paste
 
@@ -78,6 +88,8 @@ Complete reference of all custom keymaps in this Neovim configuration.
 | `<leader>dd` | n,v | Delete without yanking |
 | `jk` | i | Escape from insert mode |
 | `x` | n | Delete character without yanking |
+| `Ctrl+Backspace` | i | Delete word backward (IDE-style) |
+| `Ctrl+H` | i | Delete word backward (alternative) |
 
 ### Comments
 
@@ -273,7 +285,6 @@ Complete reference of all custom keymaps in this Neovim configuration.
 | `<leader>ca` | n | Add missing imports |
 | `<leader>co` | n | Organize imports |
 | `<leader>cr` | n | Remove unused imports |
-| `Ctrl+h` | i | Show signature help |
 
 ### Linting
 
@@ -510,7 +521,7 @@ Complete reference of all custom keymaps in this Neovim configuration.
 
 | Keys | Mode | Description |
 |------|------|-------------|
-| `Cmd+d` | n | Find and select next occurrence |
+| `Ctrl+d` | n | Find and select next occurrence (works on all platforms) |
 | `Ctrl+x` | n | Skip current and find next |
 | `<leader>A` | n | Select all occurrences |
 | `Alt+Down` | n | Add cursor below |
@@ -519,6 +530,19 @@ Complete reference of all custom keymaps in this Neovim configuration.
 | `u` | multi | Undo cursors |
 | `Ctrl+r` | multi | Redo cursors |
 | `Tab` | multi | Switch mode |
+
+---
+
+## Cross-Platform Compatibility
+
+This Neovim configuration is designed to work seamlessly across macOS, Linux, and Windows:
+
+- **Multi-cursor (`Ctrl+d`)**: Uses `Ctrl+d` which works universally across all platforms
+- **Navigation**: `Alt` key mappings (`Alt+h/l/j/k`) work consistently on all operating systems
+- **Word deletion**: `Ctrl+Backspace` and `Ctrl+H` provide IDE-style word deletion in insert mode
+- **All keybindings**: Designed to avoid platform-specific conflicts and provide consistent experience
+
+**Note**: Some terminal emulators may require additional configuration to properly support all key combinations (especially `Ctrl+Backspace` and `Alt` combinations).
 
 ---
 
@@ -575,4 +599,4 @@ All formatters run automatically on save!
 ---
 
 *This document was auto-generated from the Neovim configuration files.*
-*Last updated: 2025-11-27*
+*Last updated: 2025-12-14*
