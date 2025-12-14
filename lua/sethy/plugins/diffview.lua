@@ -39,7 +39,8 @@ return {
         },
         merge_tool = {
           -- Config for conflicted files in diff views during a merge or rebase.
-          layout = "diff3_horizontal",
+          -- IntelliJ-like layout: shows BASE, OURS (current), THEIRS (incoming), and RESULT
+          layout = "diff3_mixed",  -- Shows: OURS | RESULT | THEIRS with BASE available
           disable_diagnostics = true,   -- Temporarily disable diagnostics for conflict buffers while in the view.
           winbar_info = true,           -- See ':h diffview-config-view.x.winbar_info'
         },
@@ -520,7 +521,29 @@ return {
     vim.keymap.set('n', '<leader>gdf', '<cmd>DiffviewFileHistory %<cr>', { desc = 'Diffview: Current File History' })
     vim.keymap.set('n', '<leader>gdr', '<cmd>DiffviewRefresh<cr>', { desc = 'Diffview: Refresh' })
 
-    -- Quick access keybindings (like VSCode)
+    -- Merge conflict resolution (IntelliJ-like)
+    vim.keymap.set('n', '<leader>gv', '<cmd>DiffviewOpen<cr>', { desc = 'Git: Resolve Merge Conflicts' })
+    vim.keymap.set('n', '<leader>gV', function()
+      vim.cmd('DiffviewOpen')
+      vim.notify('Merge Tool Controls:\n  2do = Accept OURS (current)\n  3do = Accept THEIRS (incoming)\n  [x/]x = Navigate conflicts\n  g<C-x> = Cycle layouts', vim.log.levels.INFO)
+    end, { desc = 'Git: Merge Tool (with hints)' })
+
+    -- List conflicted files
+    vim.keymap.set('n', '<leader>gx', function()
+      local handle = io.popen('git diff --name-only --diff-filter=U')
+      if handle then
+        local result = handle:read("*a")
+        handle:close()
+        if result and result ~= "" then
+          vim.notify('Conflicted files:\n' .. result, vim.log.levels.WARN)
+          vim.cmd('DiffviewOpen')
+        else
+          vim.notify('No merge conflicts found', vim.log.levels.INFO)
+        end
+      end
+    end, { desc = 'Git: Show Conflicted Files' })
+
+    -- Quick access keybindings (like VSCode/IntelliJ)
     vim.keymap.set('n', '<leader>gh', '<cmd>DiffviewFileHistory %<cr>', { desc = 'Git: File History (Timeline)' })
     vim.keymap.set('v', '<leader>gh', ":'<,'>DiffviewFileHistory<cr>", { desc = 'Git: Selection History' })
     vim.keymap.set('n', '<leader>gb', '<cmd>DiffviewFileHistory %<cr>', { desc = 'Git: File Blame/History' })

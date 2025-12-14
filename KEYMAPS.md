@@ -408,6 +408,14 @@ Complete reference of all custom keymaps in this Neovim configuration.
 | `<leader>gdf` | n | Current File History |
 | `<leader>gdr` | n | Refresh Diffview |
 
+**Merge Conflict Resolution (IntelliJ-Style):**
+
+| Keys | Mode | Description |
+|------|------|-------------|
+| `<leader>gv` | n | Open Merge Tool for Conflicts |
+| `<leader>gV` | n | Open Merge Tool (with hints) |
+| `<leader>gx` | n | Show Conflicted Files & Open Merge Tool |
+
 **Diffview View:**
 
 | Keys | Mode | Description |
@@ -587,9 +595,22 @@ All formatters run automatically on save!
 4. Paste anywhere with `Cmd+v` (macOS) or `Ctrl+v` (Linux/Windows)
 
 **Merge Conflict Resolution:**
+
+**Quick Inline Resolution:**
 1. When you see conflicts, use `]x` to jump to next conflict
 2. Use `co` (ours), `ct` (theirs), `cb` (both), or `c0` (none)
 3. Save and continue!
+
+**IntelliJ-Style 3-Way Merge:**
+1. Press `<leader>gv` or `<leader>gV` to open the merge tool
+2. You'll see a 3-pane layout: OURS | RESULT | THEIRS
+3. In the diff view:
+   - Press `2do` to accept OURS (current branch)
+   - Press `3do` to accept THEIRS (incoming branch)
+   - Use `[x` and `]x` to navigate between conflicts
+   - Press `g<Ctrl-x>` to cycle through different layouts
+4. Navigate files with `Tab` / `Shift+Tab`
+5. Save and close with `:wq` when done
 
 **View File History (Like VSCode Timeline):**
 1. Press `<leader>gh` to see file history
