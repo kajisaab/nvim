@@ -1,7 +1,7 @@
--- vim.g.loaded_netrw = 0
--- vim.g.loaded_netrwPlugin = 0
--- vim.cmd("let g:netrw_liststyle = 3")
-vim.cmd("let g:netrw_banner = 0 ")
+-- Load configuration settings
+local config = require("sethy.config")
+
+vim.cmd("let g:netrw_banner = 0")
 
 -- Configure nvm Node.js path for Neovim
 -- This ensures Neovim plugins can access npm and node from nvm
@@ -22,22 +22,24 @@ end
 
 vim.opt.guicursor = ""
 
--- Font configuration (for GUI clients like Neovide, neovim-qt, goneovim)
-vim.opt.guifont = "Monaspace Radon:h10"
+-- Font configuration (from config file)
+vim.opt.guifont = config.get_font_string()
 
-vim.opt.nu = true
-vim.opt.relativenumber = false
+-- Line numbers (from config)
+vim.opt.nu = config.general.number
+vim.opt.relativenumber = config.general.relativenumber
 
 vim.opt.encoding = "utf-8"
 vim.opt.fileencoding = "utf-8"
 
-vim.opt.tabstop = 4
-vim.opt.softtabstop = 4
-vim.opt.shiftwidth = 4
-vim.opt.expandtab = true
+-- Tab and indentation (from config)
+vim.opt.tabstop = config.general.tabstop
+vim.opt.softtabstop = config.general.tabstop
+vim.opt.shiftwidth = config.general.shiftwidth
+vim.opt.expandtab = config.general.expandtab
 vim.opt.autoindent = true
 vim.opt.smartindent = true
-vim.opt.wrap = false
+vim.opt.wrap = config.general.wrap
 
 vim.opt.swapfile = false
 vim.opt.backup = false
@@ -47,38 +49,40 @@ vim.opt.undofile = true
 vim.opt.incsearch = true
 vim.opt.inccommand = "split"
 
-vim.opt.ignorecase = true
-vim.opt.smartcase = true
+-- Search settings (from config)
+vim.opt.ignorecase = config.general.ignorecase
+vim.opt.smartcase = config.general.smartcase
 
 vim.opt.termguicolors = true
 vim.opt.background = "dark"
 
-vim.opt.scrolloff = 8
+-- Scrolling and signs (from config)
+vim.opt.scrolloff = config.general.scrolloff
 vim.opt.signcolumn = "yes"
 
--- Enable folding ( setup in nvim-ufo )
-vim.o.foldenable = true -- Enable folding by default
-vim.o.foldmethod = "manual" -- Default fold method (change as needed)
-vim.o.foldlevel = 99 -- Open most folds by default
+-- Enable folding (from config, setup in nvim-ufo)
+vim.o.foldenable = config.general.foldenable
+vim.o.foldmethod = "manual"
+vim.o.foldlevel = config.general.foldlevel
 vim.o.foldcolumn = "0"
 
--- backspace
+-- Backspace behavior
 vim.opt.backspace = { "start", "eol", "indent" }
 
---split windows
-vim.opt.splitright = true --split vertical window to the right
-vim.opt.splitbelow = true --split horizontal window to the bottom
+-- Split windows
+vim.opt.splitright = true
+vim.opt.splitbelow = true
 
 vim.opt.isfname:append("@-@")
-vim.opt.updatetime = 50
-vim.opt.colorcolumn = "80"
+vim.opt.updatetime = config.general.updatetime
+vim.opt.colorcolumn = config.general.colorcolumn
 
--- clipboard
-vim.opt.clipboard:append("unnamedplus") --use system clipboard as default
+-- Clipboard (from config)
+vim.opt.clipboard:append(config.general.clipboard)
 vim.opt.hlsearch = true
 
--- for easy mouse resizing, just incase
-vim.opt.mouse = "a"
+-- Mouse support (from config)
+vim.opt.mouse = config.general.mouse
 
 -- gets rid of line with white spaces
 vim.g.editorconfig = true
@@ -86,22 +90,3 @@ vim.g.editorconfig = true
 -- Window title - shows filename and modified status
 vim.opt.title = true
 vim.opt.titlestring = "%t %M" -- %t = filename, %M = modified flag [+]
-
-vim.api.nvim_create_autocmd("User", {
-	pattern = "VeryLazy",
-	callback = function()
-		vim.api.nvim_create_autocmd("BufWinEnter", {
-			pattern = "*",
-			callback = function()
-				local ok, view = pcall(require, "nvim-tree.view")
-				if not ok then
-					return
-				end
-
-				if vim.fn.winnr("$") == 1 and view.is_visible() then
-					vim.cmd("vsplit")
-				end
-			end,
-		})
-	end,
-})

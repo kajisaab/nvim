@@ -3,104 +3,191 @@ return {
 	dependencies = { "nvim-tree/nvim-web-devicons" },
 	config = function()
 		local lualine = require("lualine")
-		local lazy_status = require("lazy.status") -- to configure lazy pending updates count
+		local lazy_status = require("lazy.status")
 
+		-- LazyVim-inspired colors (works with any colorscheme)
 		local colors = {
-            color0 = "#092236",
-            color1 = "#ff5874",
-            color2 = "#c3ccdc",
-			color3 = "#1c1e26",
-			color6 = "#a1aab8",
-			color7 = "#828697",
-			color8 = "#ae81ff",
-		}
-		local my_lualine_theme = {
-			replace = {
-				a = { fg = colors.color0, bg = colors.color1, gui = "bold" },
-				b = { fg = colors.color2, bg = colors.color3 },
-			},
-			inactive = {
-				a = { fg = colors.color6, bg = colors.color3, gui = "bold" },
-				b = { fg = colors.color6, bg = colors.color3 },
-				c = { fg = colors.color6, bg = colors.color3 },
-			},
-			normal = {
-				a = { fg = colors.color0, bg = colors.color7, gui = "bold" },
-				b = { fg = colors.color2, bg = colors.color3 },
-				c = { fg = colors.color2, bg = colors.color3 },
-			},
-			visual = {
-				a = { fg = colors.color0, bg = colors.color8, gui = "bold" },
-				b = { fg = colors.color2, bg = colors.color3 },
-			},
-			insert = {
-				a = { fg = colors.color0, bg = colors.color2, gui = "bold" },
-				b = { fg = colors.color2, bg = colors.color3 },
-			},
+			bg = "#1a1b26",
+			fg = "#c0caf5",
+			yellow = "#e0af68",
+			cyan = "#7dcfff",
+			darkblue = "#0db9d7",
+			green = "#9ece6a",
+			orange = "#ff9e64",
+			violet = "#bb9af7",
+			magenta = "#c678dd",
+			blue = "#7aa2f7",
+			red = "#f7768e",
 		}
 
-        local mode = {
-            'mode',
-            fmt = function(str)
-                -- return ' ' 
-                -- displays only the first character of the mode
-                return ' ' .. str
-            end,
-        }
+		-- Simplified auto theme that works with any colorscheme
+		local function get_mode_color()
+			local mode_colors = {
+				n = colors.blue,
+				i = colors.green,
+				v = colors.violet,
+				V = colors.violet,
+				c = colors.orange,
+				no = colors.red,
+				s = colors.orange,
+				S = colors.orange,
+				ic = colors.yellow,
+				R = colors.red,
+				Rv = colors.red,
+				cv = colors.red,
+				ce = colors.red,
+				r = colors.cyan,
+				rm = colors.cyan,
+				["r?"] = colors.cyan,
+				["!"] = colors.red,
+				t = colors.green,
+			}
+			return mode_colors[vim.fn.mode()]
+		end
 
-        local diff = {
-            'diff',
-            colored = true,
-            symbols = { added = ' ', modified = ' ', removed = ' ' }, -- changes diff symbols
-            -- cond = hide_in_width,
-        }
+		-- Custom components
+		local mode = {
+			function()
+				return ""
+			end,
+			padding = { left = 1, right = 0 },
+			color = function()
+				return { fg = get_mode_color(), gui = "bold" }
+			end,
+		}
 
-        local filename = {
-            'filename',
-            file_status = true,  -- Shows [+] for modified, [RO] for readonly
-            path = 1,            -- 0 = just filename, 1 = relative path, 2 = absolute path
-            symbols = {
-                modified = '[●]',      -- Text to show when file is modified
-                readonly = '[🔒]',     -- Text to show when file is readonly
-                unnamed = '[No Name]', -- Text to show for unnamed buffers
-                newfile = '[New]',     -- Text to show for new files
-            },
-            color = function()
-                -- Change color if file is modified
-                if vim.bo.modified then
-                    return { fg = '#ff9e64', gui = 'bold' }  -- Orange/yellow for modified
-                end
-                return nil
-            end,
-        }
+		local branch = {
+			"branch",
+			icon = "",
+			color = { gui = "bold" },
+		}
 
-        local branch = {'branch', icon = {'', color={fg='#A6D4DE'}}, '|'}
+		local diff = {
+			"diff",
+			colored = true,
+			symbols = {
+				added = " ",
+				modified = " ",
+				removed = " ",
+			},
+			diff_color = {
+				added = { fg = colors.green },
+				modified = { fg = colors.orange },
+				removed = { fg = colors.red },
+			},
+		}
 
+		local diagnostics = {
+			"diagnostics",
+			sources = { "nvim_diagnostic" },
+			sections = { "error", "warn", "info", "hint" },
+			symbols = {
+				error = " ",
+				warn = " ",
+				info = " ",
+				hint = " ",
+			},
+			colored = true,
+			update_in_insert = false,
+			always_visible = false,
+		}
 
+		local filename = {
+			"filename",
+			file_status = true,
+			newfile_status = true,
+			path = 1, -- 0: just filename, 1: relative path, 2: absolute path, 3: absolute path with tilde
+			shorting_target = 40,
+			symbols = {
+				modified = "●",
+				readonly = "",
+				unnamed = "[No Name]",
+				newfile = "",
+			},
+		}
+
+		local lsp_clients = {
+			function()
+				local clients = vim.lsp.get_clients({ bufnr = 0 })
+				if next(clients) == nil then
+					return ""
+				end
+
+				local c = {}
+				for _, client in pairs(clients) do
+					table.insert(c, client.name)
+				end
+				return "  " .. table.concat(c, "|")
+			end,
+			color = { gui = "bold" },
+		}
+
+		local location = {
+			"location",
+			padding = { left = 0, right = 1 },
+		}
+
+		local progress = {
+			"progress",
+			padding = { left = 0, right = 0 },
+		}
+
+		local lazy_updates = {
+			lazy_status.updates,
+			cond = lazy_status.has_updates,
+			color = { fg = colors.orange },
+		}
+
+		-- Setup
 		lualine.setup({
-            icons_enabled = true,
 			options = {
-				theme = my_lualine_theme,
-				component_separators = { left = "|", right = "|" },
-				section_separators = { left = "|", right = "" },
-			},
-			sections = {
-                lualine_a = { mode },
-                lualine_b = { branch },
-                lualine_c = { diff, filename },
-				lualine_x = {
-					{
-                        -- require("noice").api.statusline.mode.get,
-                        -- cond = require("noice").api.statusline.mode.has,
-						lazy_status.updates,
-						cond = lazy_status.has_updates,
-						color = { fg = "#ff9e64" },
-					},
-					-- { "encoding",},
-					-- { "fileformat" },
-					{ "filetype" },
+				icons_enabled = true,
+				theme = "auto", -- Uses colorscheme's theme
+				component_separators = { left = "", right = "" },
+				section_separators = { left = "", right = "" },
+				disabled_filetypes = {
+					statusline = { "dashboard", "alpha", "starter" },
+					winbar = {},
+				},
+				ignore_focus = {},
+				always_divide_middle = true,
+				globalstatus = true, -- Single statusline for all windows (LazyVim style)
+				refresh = {
+					statusline = 1000,
+					tabline = 1000,
+					winbar = 1000,
 				},
 			},
+			sections = {
+				lualine_a = { mode },
+				lualine_b = { branch },
+				lualine_c = {
+					diff,
+					diagnostics,
+					{ "filetype", icon_only = true, separator = "", padding = { left = 1, right = 0 } },
+					filename,
+				},
+				lualine_x = {
+					lazy_updates,
+					lsp_clients,
+				},
+				lualine_y = {
+					progress,
+				},
+				lualine_z = {
+					location,
+				},
+			},
+			inactive_sections = {
+				lualine_a = {},
+				lualine_b = {},
+				lualine_c = { "filename" },
+				lualine_x = { "location" },
+				lualine_y = {},
+				lualine_z = {},
+			},
+			tabline = {},
+			extensions = { "nvim-tree", "toggleterm", "quickfix", "trouble" },
 		})
 	end,
 }
